@@ -13,3 +13,7 @@
 **/apps/
 /apps/
 */apps/*
+
+**/out/
+/out/
+*/out/*
