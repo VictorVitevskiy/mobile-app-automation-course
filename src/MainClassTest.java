@@ -4,11 +4,11 @@ import org.junit.Test;
 public class MainClassTest {
 
     @Test
-    public void testGetClassNumber() {
+    public void testGetClassString() {
 
         Assert.assertTrue(
-                "Return value by getClassNumber form MainClass <= 45",
-                45 < MainClass.getClassNumber()
+                "Return value by getClassString form MainClass does not contain hello or Hello substring",
+                MainClass.getClassString().contains("hello") || MainClass.getClassString().contains("Hello")
         );
     }
 }
