@@ -4,12 +4,11 @@ import org.junit.Test;
 public class MainClassTest {
 
     @Test
-    public void testGetLocalNumber() {
+    public void testGetClassNumber() {
 
-        Assert.assertEquals(
-                "Return value by getLocalNumber form MainClass is not 14",
-                14,
-                MainClass.getLocalNumber()
+        Assert.assertTrue(
+                "Return value by getClassNumber form MainClass <= 45",
+                45 < MainClass.getClassNumber()
         );
     }
 }
