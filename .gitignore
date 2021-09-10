@@ -10,10 +10,6 @@
 *.idea
 *.DS_Store
 
-**/apps/
-/apps/
-*/apps/*
-
 **/out/
 /out/
 */out/*
