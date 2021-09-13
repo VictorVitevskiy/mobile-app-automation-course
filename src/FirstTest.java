@@ -17,7 +17,7 @@ public class FirstTest {
     private AppiumDriver<?> driver;
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
 
@@ -132,6 +132,28 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testEntryFieldContainsText() {
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                10
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Cannot find entry field",
+                10
+        );
+
+        assertElementHasText(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Search…",
+                "Cannot find expected text in entry field"
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeout_in_seconds) {
 
         WebDriverWait wait = new WebDriverWait(driver, timeout_in_seconds);
@@ -172,5 +194,14 @@ public class FirstTest {
         WebElement element = waitForElementPresent(by, error_message, timeout_in_seconds);
         element.clear();
         return element;
+    }
+
+    private void assertElementHasText(By by, String expected_text, String error_message) {
+
+        WebElement element = waitForElementPresent(by, error_message);
+        Assert.assertTrue(
+                error_message,
+                element.getAttribute("text").contains(expected_text)
+        );
     }
 }
