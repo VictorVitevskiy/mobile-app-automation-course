@@ -195,45 +195,6 @@ public class FirstTest {
         );
     }
 
-    @Test
-    public void testCheckingWordsInSearch() {
-
-        waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find 'Search Wikipedia' input",
-                10
-        );
-
-        String search_text = "Java";
-        waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                search_text,
-                "Cannot find 'Search…' input",
-                10
-        );
-
-        waitForElementPresent(
-                By.id("org.wikipedia:id/page_list_item_container"),
-                "Cannot find search results",
-                10
-        );
-
-        int articles_number = driver.findElements(By.id("org.wikipedia:id/page_list_item_container")).size();
-        int number = 0;
-
-        while (articles_number > number) {
-            number++;
-            WebElement element = waitForElementPresent(
-                    By.xpath("//android.widget.LinearLayout[" + number + "][@resource-id='org.wikipedia:id/page_list_item_container']//android.widget.TextView[1]"),
-                    "Search element not found"
-            );
-
-            Assert.assertTrue(
-                    "Search result does not contain the search word ",
-                    element.getAttribute("text").contains(search_text));
-        }
-    }
-
     private WebElement waitForElementPresent(By by, String error_message, long timeout_in_seconds) {
 
         WebDriverWait wait = new WebDriverWait(driver, timeout_in_seconds);
