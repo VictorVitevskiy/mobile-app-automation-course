@@ -154,6 +154,47 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testVerifyAndCancelSearch() {
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                15
+        );
+
+        String search_text = "Java";
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                search_text,
+                "Cannot find 'Search…' input",
+                15
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
+                "Cannot find search results",
+                10
+        );
+
+        Assert.assertTrue(
+                "Found one or zero articles",
+                driver.findElements(By.id("org.wikipedia:id/page_list_item_container")).size() > 1
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find X to cancel search",
+                10
+        );
+
+        Assert.assertEquals(
+                "Articles are still on the page ",
+                0,
+                driver.findElements(By.id("org.wikipedia:id/page_list_item_container")).size()
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeout_in_seconds) {
 
         WebDriverWait wait = new WebDriverWait(driver, timeout_in_seconds);
