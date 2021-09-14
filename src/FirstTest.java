@@ -1,6 +1,7 @@
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidElement;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -693,6 +694,36 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testOpenArticleAndCheckTitle() {
+
+        String title = "Java (programming language)";
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                15
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Java",
+                "Cannot find search input",
+                15
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='" + title + "']"),
+                "Cannot find '" + title + "' title",
+                30
+        );
+
+        assertElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Cannot find article title"
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeout_in_seconds) {
 
         WebDriverWait wait = new WebDriverWait(driver, timeout_in_seconds);
@@ -818,5 +849,13 @@ public class FirstTest {
 
         WebElement element = waitForElementPresent(by, error_message, timeout_in_seconds);
         return element.getAttribute(attribute);
+    }
+
+    private void assertElementPresent(By by, String error_message) {
+
+        if (driver.findElements(by).size() < 1) {
+            String default_message = "An element '" + by.toString() + "' supposed to be present";
+            throw new AssertionError(default_message + " " + error_message);
+        }
     }
 }
