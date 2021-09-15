@@ -14,7 +14,8 @@ public class SearchPageObject extends MainPageObject{
             SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
             SEARCH_RESULT_ELEMENT_BY_ORDER_TPL = "//android.widget.LinearLayout[{NUMBER}][@resource-id='org.wikipedia:id/page_list_item_container']//android.widget.TextView[1]",
-            SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']";
+            SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']",
+            SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{TITLE}']/..//*[@text='{DESCRIPTION}']";
 
     public SearchPageObject(AppiumDriver<?> driver) {
         super(driver);
@@ -103,6 +104,17 @@ public class SearchPageObject extends MainPageObject{
         );
     }
 
+    public void waitForElementByTitleAndDescription(String title, String description) {
+
+        String search_result_xpath = getResultSearchElementByTitleAndDescription(title, description);
+        System.out.println(search_result_xpath);
+        this.waitForElementPresent(
+                By.xpath(search_result_xpath),
+                String.format("Cannot find search result with title '%s' and description '%s'", title, description),
+                10
+        );
+    }
+
     public int getAmountOfFoundArticles() {
 
         this.waitForElementPresent(
@@ -165,5 +177,9 @@ public class SearchPageObject extends MainPageObject{
 
     private static String getSearchElementByOrder(String substring) {
         return SEARCH_RESULT_ELEMENT_BY_ORDER_TPL.replace("{NUMBER}", substring);
+    }
+
+    private static String getResultSearchElementByTitleAndDescription(String title, String description) {
+        return SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL.replace("{TITLE}",title).replace("{DESCRIPTION}", description);
     }
 }

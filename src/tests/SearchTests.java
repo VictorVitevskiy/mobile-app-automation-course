@@ -92,4 +92,24 @@ public class SearchTests extends CoreTestCase {
         searchPageObject.waitForEmptyResultsLabel();
         searchPageObject.assertThereIsNoResultOfSearch();
     }
+
+    @Test
+    public void testVerifyFirstThreeSearchResults() {
+
+        String search_text = "Java";
+
+        String first_result_title = "Java";
+        String first_result_description = "Island of Indonesia";
+        String second_result_title = "JavaScript";
+        String second_result_description = "Programming language";
+        String third_result_title = "Java (programming language)";
+        String third_result_description = "Object-oriented programming language";
+
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine(search_text);
+        searchPageObject.waitForElementByTitleAndDescription(first_result_title, first_result_description);
+        searchPageObject.waitForElementByTitleAndDescription(second_result_title, second_result_description);
+        searchPageObject.waitForElementByTitleAndDescription(third_result_title, third_result_description);
+    }
 }
