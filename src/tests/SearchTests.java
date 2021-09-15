@@ -30,107 +30,68 @@ public class SearchTests extends CoreTestCase {
         searchPageObject.waitForCancelButtonToDisappear();
     }
 
-    @Test
-    public void testEntryFieldContainsText() {
+//    @Test
+//    public void testEntryFieldContainsText() {
+//
+//        mainPageObject.waitForElementAndClick(
+//                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+//                "Cannot find 'Search Wikipedia' input",
+//                10
+//        );
+//
+//        mainPageObject.waitForElementPresent(
+//                By.xpath("//*[contains(@text,'Search…')]"),
+//                "Cannot find entry field",
+//                10
+//        );
+//
+//        mainPageObject.assertElementHasText(
+//                By.xpath("//*[contains(@text,'Search…')]"),
+//                "Search…",
+//                "Cannot find expected text in entry field"
+//        );
+//    }
 
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find 'Search Wikipedia' input",
-                10
-        );
 
-        mainPageObject.waitForElementPresent(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                "Cannot find entry field",
-                10
-        );
 
-        mainPageObject.assertElementHasText(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                "Search…",
-                "Cannot find expected text in entry field"
-        );
-    }
-
-    @Test
-    public void testVerifyAndCancelSearch() {
-
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find 'Search Wikipedia' input",
-                15
-        );
-
-        String search_text = "Java";
-        mainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                search_text,
-                "Cannot find 'Search…' input",
-                15
-        );
-
-        mainPageObject.waitForElementPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
-                "Cannot find search results",
-                10
-        );
-
-        assertTrue(
-                "Found one or zero articles",
-                driver.findElements(By.id("org.wikipedia:id/page_list_item_container")).size() > 1
-        );
-
-        mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_close_btn"),
-                "Cannot find X to cancel search",
-                10
-        );
-
-        assertEquals(
-                "Articles are still on the page ",
-                0,
-                driver.findElements(By.id("org.wikipedia:id/page_list_item_container")).size()
-        );
-    }
-
-    @Test
-    public void testCheckingWordsInSearch() {
-
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find 'Search Wikipedia' input",
-                10
-        );
-
-        String search_text = "Java";
-        mainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                search_text,
-                "Cannot find 'Search…' input",
-                10
-        );
-
-        mainPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/page_list_item_container"),
-                "Cannot find search results",
-                10
-        );
-
-        int articles_number = driver.findElements(By.id("org.wikipedia:id/page_list_item_container")).size();
-        int number = 0;
-
-        while (articles_number > number) {
-            number++;
-            WebElement element = mainPageObject.waitForElementPresent(
-                    By.xpath("//android.widget.LinearLayout[" + number + "][@resource-id='org.wikipedia:id/page_list_item_container']//android.widget.TextView[1]"),
-                    "Search element not found"
-            );
-
-            Assert.assertTrue(
-                    "Search result does not contain the search word ",
-                    element.getAttribute("text").contains(search_text));
-        }
-    }
+//    @Test
+//    public void testCheckingWordsInSearch() {
+//
+//        mainPageObject.waitForElementAndClick(
+//                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+//                "Cannot find 'Search Wikipedia' input",
+//                10
+//        );
+//
+//        String search_text = "Java";
+//        mainPageObject.waitForElementAndSendKeys(
+//                By.xpath("//*[contains(@text,'Search…')]"),
+//                search_text,
+//                "Cannot find 'Search…' input",
+//                10
+//        );
+//
+//        mainPageObject.waitForElementPresent(
+//                By.id("org.wikipedia:id/page_list_item_container"),
+//                "Cannot find search results",
+//                10
+//        );
+//
+//        int articles_number = driver.findElements(By.id("org.wikipedia:id/page_list_item_container")).size();
+//        int number = 0;
+//
+//        while (articles_number > number) {
+//            number++;
+//            WebElement element = mainPageObject.waitForElementPresent(
+//                    By.xpath("//android.widget.LinearLayout[" + number + "][@resource-id='org.wikipedia:id/page_list_item_container']//android.widget.TextView[1]"),
+//                    "Search element not found"
+//            );
+//
+//            Assert.assertTrue(
+//                    "Search result does not contain the search word ",
+//                    element.getAttribute("text").contains(search_text));
+//        }
+//    }
 
     @Test
     public void testAmountOfNotEmptySearch() {
