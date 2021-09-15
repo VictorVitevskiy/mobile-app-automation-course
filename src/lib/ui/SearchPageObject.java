@@ -1,7 +1,9 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class SearchPageObject extends MainPageObject{
 
@@ -11,6 +13,7 @@ public class SearchPageObject extends MainPageObject{
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
+            SEARCH_RESULT_ELEMENT_BY_ORDER_TPL = "//android.widget.LinearLayout[{NUMBER}][@resource-id='org.wikipedia:id/page_list_item_container']//android.widget.TextView[1]",
             SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']";
 
     public SearchPageObject(AppiumDriver<?> driver) {
@@ -66,6 +69,21 @@ public class SearchPageObject extends MainPageObject{
         );
     }
 
+    public void verifyTextInSearchLine(String search_line) {
+
+        this.waitForElementPresent(
+                By.xpath(SEARCH_INPUT),
+                "Cannot find entry field",
+                10
+        );
+
+        this.assertElementHasText(
+                By.xpath(SEARCH_INPUT),
+                search_line,
+                "Cannot find expected text in entry field"
+        );
+    }
+
     public void waitForSearchResult(String substring) {
 
         String search_result_xpath = getResultSearchElement(substring);
@@ -111,6 +129,31 @@ public class SearchPageObject extends MainPageObject{
         );
     }
 
+    public void checkCorrectnessOfSearchResults(String search_text) {
+
+        this.waitForElementPresent(
+                By.xpath(SEARCH_RESULT_ELEMENT),
+                "Cannot find search results",
+                10
+        );
+
+        int articles_number = driver.findElements(By.xpath(SEARCH_RESULT_ELEMENT)).size();
+        int number = 0;
+
+        while (articles_number > number) {
+            number++;
+            String search_element_xpath = getSearchElementByOrder("" + number);
+            WebElement element = this.waitForElementPresent(
+                    By.xpath(search_element_xpath),
+                    "Search element not found"
+            );
+
+            Assert.assertTrue(
+                    "Search result does not contain the search word ",
+                    element.getAttribute("text").contains(search_text));
+        }
+    }
+
     /**
      * TEMPLATEs METHOD
      * @param substring
@@ -118,5 +161,9 @@ public class SearchPageObject extends MainPageObject{
      */
     private static String getResultSearchElement(String substring) {
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
+    }
+
+    private static String getSearchElementByOrder(String substring) {
+        return SEARCH_RESULT_ELEMENT_BY_ORDER_TPL.replace("{NUMBER}", substring);
     }
 }
