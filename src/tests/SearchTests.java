@@ -52,7 +52,28 @@ public class SearchTests extends CoreTestCase {
 //        );
 //    }
 
+    @Test
+    public void testVerifyAndCancelSearch() {
 
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.waitForSearchResult("Object-oriented programming language");
+
+        assertTrue(
+                "Found one or zero articles",
+                driver.findElements(By.id("org.wikipedia:id/page_list_item_container")).size() > 1
+        );
+
+        searchPageObject.clickCancelSearch();
+
+        assertEquals(
+                "Articles are still on the page ",
+                0,
+                driver.findElements(By.id("org.wikipedia:id/page_list_item_container")).size()
+        );
+    }
 
 //    @Test
 //    public void testCheckingWordsInSearch() {
