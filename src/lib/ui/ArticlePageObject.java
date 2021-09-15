@@ -36,6 +36,14 @@ public class ArticlePageObject extends MainPageObject{
         return title_element.getAttribute("text");
     }
 
+    public void checkArticleTitlePresent() {
+
+        this.assertElementPresent(
+                By.id(TITLE),
+                "Cannot find article title"
+        );
+    }
+
     public void swipeToFooter() {
 
         this.swipeUpToFindElement(
