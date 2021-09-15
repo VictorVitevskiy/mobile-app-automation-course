@@ -14,7 +14,8 @@ public class ArticlePageObject extends MainPageObject{
             ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
             MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
             MY_LIST_OK_BUTTON = "android:id/button1",
-            CLOSE_ARTICLE_BUTTON = "Navigate up";
+            CLOSE_ARTICLE_BUTTON = "Navigate up",
+            FOLDER_BY_NAME_TPL = "//*[@text='{FOLDER_NAME}']";
 
     public ArticlePageObject(AppiumDriver<?> driver) {
         super(driver);
@@ -44,7 +45,7 @@ public class ArticlePageObject extends MainPageObject{
         );
     }
 
-    public void addArticleToMyList(String name_of_folder) {
+    public void addArticleToMyListForTheFirstTime(String name_of_folder) {
 
         this.waitForElementAndClick(
                 By.id(OPTIONS_BUTTON),
@@ -83,6 +84,27 @@ public class ArticlePageObject extends MainPageObject{
                 10
         );
     }
+    public void addArticleIntoExistingMyList(String name_of_folder) {
+
+        this.waitForElementAndClick(
+                By.id(OPTIONS_BUTTON),
+                "Cannot find button to open article options",
+                10
+        );
+
+        this.waitForElementAndClick(
+                By.xpath(OPTIONS_ADD_TO_MY_LIST_BUTTON),
+                "Cannot find option to add article to reading list",
+                10
+        );
+
+        String folder_xpath = getFolderByName(name_of_folder);
+        this.waitForElementAndClick(
+                By.xpath(folder_xpath),
+                "Cannot find option to add article to My lists",
+                10
+        );
+    }
 
     public void closeArticle() {
 
@@ -91,5 +113,9 @@ public class ArticlePageObject extends MainPageObject{
                 "Cannot close article, cannot find X button",
                 10
         );
+    }
+
+    private static String getFolderByName(String name_of_folder) {
+        return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}", name_of_folder);
     }
 }

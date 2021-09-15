@@ -23,6 +23,16 @@ public class MyListsPageObject extends MainPageObject{
         );
     }
 
+    public void openArticleByTitle(String article_title) {
+
+        String article_xpath = getSavedArticleByTitle(article_title);
+        this.waitForElementAndClick(
+                By.xpath(article_xpath),
+                "Cannot find folder by name " + article_title,
+                10
+        );
+    }
+
     public void swipeByArticleToDelete(String article_title) {
 
         this.waitForArticleToAppearByTitle(article_title);
