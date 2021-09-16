@@ -107,7 +107,6 @@ public class SearchPageObject extends MainPageObject{
     public void waitForElementByTitleAndDescription(String title, String description) {
 
         String search_result_xpath = getResultSearchElementByTitleAndDescription(title, description);
-        System.out.println(search_result_xpath);
         this.waitForElementPresent(
                 By.xpath(search_result_xpath),
                 String.format("Cannot find search result with title '%s' and description '%s'", title, description),
